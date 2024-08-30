@@ -7,64 +7,59 @@
     <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-	<script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
     <div id="root"></div>
     <script type="text/babel">
-		
-        import React, { useState } from 'react';
+        const Card3D = () => {
+          const [tilt, setTilt] = React.useState({ x: 0, y: 0 });
+          
+          const handleMouseMove = (e) => {
+            const card = e.currentTarget;
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const tiltX = (y - centerY) / 10;
+            const tiltY = (centerX - x) / 10;
+            setTilt({ x: tiltX, y: tiltY });
+          };
 
-			const Card3D = () => {
-			  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+          const handleMouseLeave = () => {
+            setTilt({ x: 0, y: 0 });
+          };
 
-			  const handleMouseMove = (e) => {
-				const card = e.currentTarget;
-				const rect = card.getBoundingClientRect();
-				const x = e.clientX - rect.left;
-				const y = e.clientY - rect.top;
-				const centerX = rect.width / 2;
-				const centerY = rect.height / 2;
-				const tiltX = (y - centerY) / 10;
-				const tiltY = (centerX - x) / 10;
-				setTilt({ x: tiltX, y: tiltY });
-			  };
+          return (
+            <div className="w-full h-full min-h-[400px] flex justify-center items-center bg-transparent">
+              <div
+                className="relative w-64 h-96 max-w-full max-h-full rounded-lg shadow-xl transition-transform duration-200 ease-out bg-cover bg-center"
+                style={{
+                  transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale3d(1, 1, 1)`,
+                  backgroundImage: "url('https://picsum.photos/256/384')"
+                }}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+              >
+                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-lg">
+                  <div className="p-4 text-white">
+                    <h2 className="text-2xl font-bold mb-2">Hianna Sabo</h2>
+                    <p className="text-sm mb-2">Content & Product Marketing Specialist</p>
+                    <ul className="text-xs">
+                      <li>7+ years of experience</li>
+                      <li>Bilingual: English/Spanish</li>
+                      <li>Content Strategy Expert</li>
+                      <li>Go-to-Market Strategist</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        };
 
-			  const handleMouseLeave = () => {
-				setTilt({ x: 0, y: 0 });
-			  };
-
-			  return (
-				<div className="w-full h-full min-h-[400px] flex justify-center items-center bg-transparent">
-				  <div
-					className="relative w-64 h-96 max-w-full max-h-full rounded-lg shadow-xl transition-transform duration-200 ease-out bg-cover bg-center"
-					style={{
-					  transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale3d(1, 1, 1)`,
-					  backgroundImage: "url('https://picsum.photos/256/384')"
-					}}
-					onMouseMove={handleMouseMove}
-					onMouseLeave={handleMouseLeave}
-				  >
-					<div className="absolute inset-0 bg-black bg-opacity-50 rounded-lg">
-					  <div className="p-4 text-white">
-						<h2 className="text-2xl font-bold mb-2">Hianna Sabo</h2>
-						<p className="text-sm mb-2">Content & Product Marketing Specialist</p>
-						<ul className="text-xs">
-						  <li>7+ years of experience</li>
-						  <li>Bilingual: English/Spanish</li>
-						  <li>Content Strategy Expert</li>
-						  <li>Go-to-Market Strategist</li>
-						</ul>
-					  </div>
-					</div>
-				  </div>
-				</div>
-			  );
-			};
-
-			export default Card3D;
-			ReactDOM.render(<Card3D />, document.getElementById('root'));
-
+        ReactDOM.render(<Card3D />, document.getElementById('root'));
     </script>
 </body>
 </html>
